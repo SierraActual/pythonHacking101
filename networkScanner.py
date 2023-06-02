@@ -6,3 +6,5 @@ def scan(ip):
 
 # Performs scan on IP in quotes
 scan("(ip)/24")
+
+# this is a test for new code. Need to update this git repo from laptop.
