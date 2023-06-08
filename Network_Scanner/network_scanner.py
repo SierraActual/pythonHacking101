@@ -14,9 +14,13 @@ def scan(ip):
     arp_request_broadcast = broadcast/arp_request
 
     #sends arp packet via srp and stores answered and unanswered packet responses
-    answered, unanswered = scapy.srp(arp_request_broadcast, timeout=1)
-    print(answered.summary())
+    answered_list = scapy.srp(arp_request_broadcast, timeout=1)[0]
     
+    for element in answered_list:
+        print(element[1].psrc)
+        print(element[1].hwsrc)
+        print('---------------------------------------------------')
+
 
 if __name__ == "__main__":
     main()
