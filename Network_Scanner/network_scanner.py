@@ -6,9 +6,17 @@ def main():
 
 
 def scan(ip):
+    #creates an arp request packet at target ip
     arp_request = scapy.ARP(pdst=ip)
-    print(arp_request.summary())
+    #creates a broadcast packet to the generic broadcast mac addr
+    broadcast = scapy.Ether(dst='ff:ff:ff:ff:ff:ff')
+    #combines the arp and broadcast packets for later use
+    arp_request_broadcast = broadcast/arp_request
 
+    #sends arp packet via srp and stores answered and unanswered packet responses
+    answered, unanswered = scapy.srp(arp_request_broadcast, timeout=1)
+    print(answered.summary())
+    
 
 if __name__ == "__main__":
     main()
