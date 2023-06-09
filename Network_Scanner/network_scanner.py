@@ -1,8 +1,31 @@
 import scapy.all as scapy
+import optparse
 
 
 def main():
-    scan("209.151.148.1")
+    target = get_arguments
+    check_args(target)
+    #perform a scan of clients on the specified network
+    found_connections = scan(target)
+
+    #print results returned from scan
+    print('IP\t\t\tMAC Address\n---------------------------------------------------')
+    for client in found_connections:
+        print(f'{client['IP']}\t\t{client['MAC']}')
+
+
+def get_arguments():
+    parser = optparse.OptionParser()
+    parser.add_option('-t', '--target', dest='target', help="IP that user wishes to scan.")
+    (options, arguments) = parser.parse_args()
+
+    return options.target
+
+
+def check_args(interface, new_mac):
+    if target == None:
+        print('Please input a target to scan using the "-t" command.\n(Use --help for help)')
+        exit()
 
 
 def scan(ip):
@@ -12,14 +35,21 @@ def scan(ip):
     broadcast = scapy.Ether(dst='ff:ff:ff:ff:ff:ff')
     #combines the arp and broadcast packets for later use
     arp_request_broadcast = broadcast/arp_request
-
     #sends arp packet via srp and stores answered and unanswered packet responses
-    answered_list = scapy.srp(arp_request_broadcast, timeout=1)[0]
-    
+    answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
+
+    #creates a list to return values
+    found_connections = []
+
+    #appends our found_connections list with dicts of parsed IP/MAC info
     for element in answered_list:
-        print(element[1].psrc)
-        print(element[1].hwsrc)
-        print('---------------------------------------------------')
+        clientDict = {
+            'IP': element[1].psrc,
+            'MAC': element[1].hwsrc
+            }
+        found_connections.append(clientDict)
+    
+    return found_connections
 
 
 if __name__ == "__main__":
