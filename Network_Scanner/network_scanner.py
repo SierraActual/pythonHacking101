@@ -1,5 +1,5 @@
 import scapy.all as scapy
-import optparse
+import argparse
 
 
 def main():
@@ -15,9 +15,9 @@ def main():
 
 
 def get_arguments():
-    parser = optparse.OptionParser()
-    parser.add_option('-t', '--target', dest='target', help="IP that user wishes to scan.")
-    (options, arguments) = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-t', '--target', dest='target', help="IP that user wishes to scan.")
+    options = parser.parse_args()
 
     return options.target
 
