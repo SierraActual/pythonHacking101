@@ -1,0 +1,13 @@
+Server:		192.168.159.2
+Address:	192.168.159.2#53
+
+Non-authoritative answer:
+Name:	iphone-online.us
+Address: 104.21.52.135
+Name:	iphone-online.us
+Address: 172.67.199.179
+Name:	iphone-online.us
+Address: 2606:4700:3033::6815:3487
+Name:	iphone-online.us
+Address: 2606:4700:3035::ac43:c7b3
+

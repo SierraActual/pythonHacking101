@@ -1,0 +1,55 @@
+Sunday 4 June 2023:
+    2001L - Recieved text from +1 (917) 419-0857:
+        "Apple Customer, Your Lost iPhone 13 Pro Graphite been located and connected to internet. Check last location at: iphone-online.us/8lOspr4Q Apple Support."
+            Skeptical of link. May be hidden link. Link itself likely bad. Start setting up new VM running parrot to check it out.
+    2045L - While waiting for VM to install, check website "iphone-online.us" on virustotal.com
+            Seemingly nothing malicious from scan 1 year ago
+    2151L - VM fully installed. VPN set up through expressvpn using ovpn file on new VM. Ready to follow link and check website.
+            - leads to a fake page that asks for the pin for the stolen device. Clearly trying to unlock my stolen phone using spear phishing.
+            - copied all HTML from this website and added to file "fake-webpage.html"
+            - putting in a PIN always results in a wrong error. After two attempts it tries to get you to log into "ICLoud" (spelled wrong)
+            - ***I USED PIN: 123456, 654321, 113562/2.4.56 (Debian AND LOGIN: johnesfand@gmail.com PW:johnEsfand1***
+            - All this information is being sent to the scammers server via a "processing.php" file
+    NEED TO MAP THIS WEBSITE AND SCAN FOR VULNS
+    LOOK INTO BURPSUITE FOR THIS.
+    
+Monday 5 June 2023:
+    2004L - Link still functional.
+          - Ran nslookup for iphone-online.us and got 2 IpV4 and 2 IpV6 (normal to have two for load balancing) stored results in nslookup.txt.
+          - Ran nmap -sV -sC scan on 104.21.52.135. Results stored in nmapsVsCFirst.txt.
+            - Ports 53, 80, 443, 8080, and 8443 up and open
+          - Ran into an issue. Server is protected by cloufare and this does not allow direct IP access. This is potentially blocking my next planned scan (gobuster for indexing common page names)
+          - Used --wildcard arg and it ran through page list in /usr/dirb/wordlists/common.txt
+          - Viewing cert shows a few things:
+            - the *.iphone-online.us is secured. Possibly need to enumberate over common subdomains
+            - Domain registered on 19 May. Relatively new so they likely hop servers as they get reported and shut down.
+    2041L - Tried several times to access https://iphone-online.us/robots.txt but all result in 403 forbidden error
+            - Even tried spoofing as a search engine for google and windows and still forbidden
+    2044L - Tried searching google for any iphone-online.us websites and it doesn't have anything. interesting.
+    2045L - Noticed website is running Apache/2.4.56 (Debian) Server at iphone-online.us Port 80 from curl result.
+    
+    
+Thursday 8 June 2023:
+    1854L - Ran whatweb -a 1 https://iphone-online.us/8lOspr4Q | result:
+                https://iphone-online.us/8lOspr4Q [404 Not Found] Cookies[PHPSESSID], Country[RESERVED][ZZ],                      HTTPServer[cloudflare], IP[172.64.80.1], Title[404 Not Found], UncommonHeaders[cf-cache-status,report-to,nel,cf-ray,alt-svc]
+          - Attempted dirb scan of https://iphone-online.us/ and https://iphone-online.us/8lOspr4Q
+            - May have shut down website. DDOS? I had two terminals running at the same time. got a few 403's then all 522 and website seems down in browser. May have IP blocked? Need to retest after restting VPN for new IP.
+            - I did capture the following output that may be relevant:
+                + https://iphone-online.us/akeeba.backend.log (CODE:403|SIZE:281)              
+                + https://iphone-online.us/cgi-bin/ (CODE:403|SIZE:281)                        
+                + https://iphone-online.us/development.log (CODE:403|SIZE:281)                 
+                + https://iphone-online.us/production.log (CODE:403|SIZE:281)                  
+                + https://iphone-online.us/robots.txt (CODE:403|SIZE:281)
+            - Changing IP did not allow access
+            - Changing MAC did not allow access
+            - Site may have shut down. Need to test further. May try texting back spam number.
+            - If nothing works, report site and all relevant info to cloudflare security team.
+            
+Friday 9 June 2023:
+    2352L (previous night) - Woke up to new spear-phishing text from new number:
+            - "Your lost iPhone 13 Pro 256GB Graphite was found at 11:52PM EDT. View your iPhone's last reported location:\n\n https://auth-findmylphone.com/HN5 \n\n Apple Support (apple logo emoji)\nText "STOP" to opt out of Find My iPhone alerts."
+         - Found full robots.txt file and saved to docs
+         - Found IP for main domain: 91.209.70.161
+            - Reverse lookup shows Private Internet Hosting LTD out of Russia
+         - Whatweb doesn't reveal much. Results saved to folder.
+         - TODO Want to create a wordlist for dirb for the robots specified domain extensions
