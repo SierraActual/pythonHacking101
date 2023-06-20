@@ -35,3 +35,18 @@ A collection of Python-based hacking tools for various security testing and pene
 - Tool 2: Brief description of what the tool does and how to use it.
 
     python tool2.py --option1 value --option2 value
+
+## Contributing
+Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch: git checkout -b my-feature.
+3. Make your changes and commit them: git commit -m 'Add new feature'.
+4. Push to the branch: git push origin my-feature.
+5. Submit a pull request.
+
+For bug reports, feature requests, or any other questions, please open an issue on the repository.
+
+## License
+This project is licensed under the MIT License.
+Feel free to modify and customize the content as per your requirements.
