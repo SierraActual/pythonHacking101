@@ -2,6 +2,7 @@
 import scapy.all as scapy
 import argparse
 import time
+from scapy.layers import http
 
 def main():
     #get user arguments
@@ -19,7 +20,8 @@ def sniff(interface):
 
 
 def process_sniffed_packet(packet):
-    print(packet)
+    if packet.haslayer(http.HTTPRequest):
+        print(packet)
 
 
 def get_arguments():
