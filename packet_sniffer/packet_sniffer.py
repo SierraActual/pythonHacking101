@@ -4,6 +4,7 @@ import argparse
 import time
 from scapy.layers import http
 
+
 def main():
     #get user arguments
     interface = get_arguments()
