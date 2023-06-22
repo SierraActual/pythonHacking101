@@ -16,7 +16,7 @@ def main():
 
 def get_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--target', dest='target', help="ip that user wishes to scan.")
+    parser.add_argument('-t', '--target', dest='target', help="IP or range of IPs that user wishes to scan.")
     options = parser.parse_args()
 
     return options.target
@@ -24,7 +24,7 @@ def get_arguments():
 
 def check_args(target):
     if target == None:
-        print('Please input a target to scan using the "-t" command.\n(Use --help for help)')
+        print('Please input a target or range to scan using the "-t" command.\n(Use --help for help)')
         exit()
 
 
