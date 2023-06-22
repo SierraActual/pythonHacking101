@@ -24,7 +24,12 @@ A collection of Python-based hacking tools for various security testing and pene
 3. **Install the required dependencies using pip:**
 
     pip3 install -r requirements.txt
-    Make sure you have Python 3.x and pip installed.
+    (Make sure you have Python 3.x and pip installed)
+
+4. **Install needed system-level dependencies:**
+
+    apt-get update && apt-get install -y libnfnetlink-dev && apt-get install -y libnetfilter-queue-dev
+    (may need to run as root)
 
 ## Usage
 
