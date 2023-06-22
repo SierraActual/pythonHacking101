@@ -9,7 +9,7 @@ def main():
     found_connections = scan(target)
 
     #print results returned from scan
-    print('ip\t\t\tmac Address\n---------------------------------------------------')
+    print('IP\t\t\tMAC Address\n---------------------------------------------------')
     for client in found_connections:
         print(f'{client["ip"]}\t\t{client["mac"]}')
 
