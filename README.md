@@ -36,19 +36,27 @@ A collection of Python-based hacking tools for various security testing and pene
 
 - **Tool 1: ARP Spoofer** - Spoofs a target computer and gateway to man-in-the-middle both
 
-    python3 arp_spoofer.py -t (insert target machine IP) -g (insert gateway IP)
+    python3 arp_spoofer/arp_spoofer.py -t (insert target machine IP) -g (insert gateway IP)
 
 - **Tool 2: MAC Changer** - Changes the MAC address of your machine
 
-    python3 mac_changer.py -i (insert interface to change; e.g. 'eth0') -m (insert new MAC address)
+    python3 mac_changer/mac_changer.py -i (insert interface to change; e.g. 'eth0') -m (insert new MAC address)
 
 - **Tool 3: Network Scanner** - Scans an IP or range of IPs for active connections
 
-    python3 network_scanner.py -t (insert target or range to scan' e.g. 10.0.2.1, 10.0.2.1/24, etc.)
+    python3 network_scanner/network_scanner.py -t (insert target or range to scan' e.g. 10.0.2.1, 10.0.2.1/24, etc.)
 
 - **Tool 4: Packet Sniffer** - Sniffs all packets running through an interface. Specifically searches HTTP requests for URLs and Username/Passwords. Will likely want to run in conjuction with ARP spoofer so that target traffic is flowing through your interface.
 
-    python3 packet_sniffer.py -i (insert insterface to sniff; e.g. 'eth0')
+    python3 packet_sniffer/packet_sniffer.py -i (insert insterface to sniff; e.g. 'eth0')
+
+- **Tool 5: Network cut** - Adds network packets to a queue to potentially modify. Currently drops all packets, but options in code to forward them.
+
+    **WARNING: Ensure you flush your iptables following running this. Currently the except clause doesn't work to flush them automatically**
+
+    python3 cut_net/cut_net.py
+
+- **DNS Spoofer** - Incomplete code. Not for use currently.
 
 ## Contributing
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
