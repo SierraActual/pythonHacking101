@@ -12,7 +12,7 @@ def main():
 
     try:
         sniff(interface)
-    except KeyboardInterrupt:
+    except:
         print('[+] Halting sniff process. Exiting...')
 
 
@@ -36,7 +36,7 @@ def get_url(packet):
 
 def get_login_info(packet):
     if packet.haslayer(scapy.Raw):
-        load = packet[scapy.Raw].load.decode()
+        load = packet[scapy.Raw].load.decode('utf-8', errors='ignore')
         keywords = ['username', 'uname', 'login', 'user', 'password', 'pass']
         for word in keywords:
             if word in load:
