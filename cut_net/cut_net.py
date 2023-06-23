@@ -32,7 +32,15 @@ def flush_iptables():
 
 
 def process_packet(packet):
+    #currently drops packets
     packet.drop()
+    #to print and accept packets:
+    '''
+    print(packet)
+    packet.accept()
+    '''
+
+    #TODO use argparse to define if you want to drop or accept
 
 
 if __name__ == '__main__':
