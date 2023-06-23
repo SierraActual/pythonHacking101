@@ -52,11 +52,11 @@ A collection of Python-based hacking tools for various security testing and pene
 
 - **Tool 5: Network cut** - Adds network packets to a queue to potentially modify. Currently drops all packets, but options in code to forward them.
 
-    **WARNING: Ensure you flush your iptables following running this. Currently the except clause doesn't work to flush them automatically**
+    **WARNING: Ensure you flush your iptables after running this (sudo iptables --flush). Currently the except clause doesn't work to flush them automatically**
 
     python3 cut_net/cut_net.py
 
-- **DNS Spoofer** - Incomplete code. Not for use currently.
+- **Tool 6: DNS Spoofer** - Incomplete code. __Not for use currently.__
 
 ## Contributing
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
