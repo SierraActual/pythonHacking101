@@ -3,7 +3,7 @@ import netfilterqueue
 import pyptables
 
 def main():
-    setup_iptables()
+    #setup_iptables()
 
     try:
         queue = netfilterqueue.NetfilterQueue()
@@ -12,7 +12,7 @@ def main():
     except KeyboardInterrupt:
         #TODO This may cause issues because except code isn't executing properly in my enviornment
         print('Resetting IP tables and exiting...')
-        flush_iptables()
+        #flush_iptables()
 
 
 def setup_iptables():
