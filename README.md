@@ -56,7 +56,9 @@ A collection of Python-based hacking tools for various security testing and pene
 
     python3 cut_net/cut_net.py
 
-- **Tool 6: DNS Spoofer** - Incomplete code. __Not for use currently.__
+- **Tool 6: DNS Spoofer** - Used to man-in-the-middle DNS requests already running through your machine (likely by using ARP spoofer). Redirects DNS requests to chosen IPs.
+
+    python3 dns_spoofer/dns_spoofer.py
 
 ## Contributing
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
