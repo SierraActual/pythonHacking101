@@ -52,13 +52,29 @@ A collection of Python-based hacking tools for various security testing and pene
 
 - **Tool 5: Network cut** - Adds network packets to a queue to potentially modify. Currently drops all packets, but options in code to forward them.
 
-    **WARNING: Ensure you flush your iptables after running this (sudo iptables --flush). Currently the except clause doesn't work to flush them automatically**
+    **WARNING: Automated iptables modification not functioning. Will need to modify iptables based on use-case.**
+        **(e.g. iptables -I FORWARD -j NFQUEUE --queue-num 0)**
+        **When complete ensure you flush with "iptables --flush"**
 
     python3 cut_net/cut_net.py
 
 - **Tool 6: DNS Spoofer** - Used to man-in-the-middle DNS requests already running through your machine (likely by using ARP spoofer). Redirects DNS requests to chosen IPs.
 
+    **WARNING: Automated iptables modification not functioning. Will need to modify iptables based on use-case.**
+        **(e.g. iptables -I FORWARD -j NFQUEUE --queue-num 0)**
+        **When complete ensure you flush with "iptables --flush"**
+
     python3 dns_spoofer/dns_spoofer.py
+
+- **Tool 7: Download Replacer** - Used to man-in-the-middle download requests already running through your machine (likely by using ARP spoofer). Redirects downloads to chosen file links.
+
+    **WARNING: Automated iptables modification not functioning. Will need to modify iptables based on use-case.**
+        **(e.g. iptables -I FORWARD -j NFQUEUE --queue-num 0)**
+        **When complete ensure you flush with "iptables --flush"**
+
+    **WARNING: Need to enable IP forwarding with "echo 1 > /proc/sys/net/ipv4/ip_forward" or file flows through middle machine will not be enabled.**
+
+    python3 replace_downloads/replace_downloads.py
 
 ## Contributing
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
