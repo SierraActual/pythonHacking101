@@ -76,6 +76,14 @@ A collection of Python-based hacking tools for various security testing and pene
 
     python3 replace_downloads/replace_downloads.py
 
+- **Tool 8: Code Injector** - Used to man-in-the-middle HTTP requests and responses (likely by using ARP spoofer) and inject custom code into websites.
+
+    **WARNING: Automated iptables modification not functioning. Will need to modify iptables based on use-case.**
+        **(e.g. iptables -I FORWARD -j NFQUEUE --queue-num 0)**
+        **When complete ensure you flush with "iptables --flush"**
+
+    python3 code_injector/code_injector.py
+
 ## Contributing
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
 
