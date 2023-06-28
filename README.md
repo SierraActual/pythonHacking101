@@ -55,6 +55,7 @@ A collection of Python-based hacking tools for various security testing and pene
     **WARNING: Automated iptables modification not functioning. Will need to modify iptables based on use-case.**
         **(e.g. iptables -I FORWARD -j NFQUEUE --queue-num 0)**
         **When complete ensure you flush with "iptables --flush"**
+        **Above may also have issues on newer systems as iptables is depreciated. Will adjust for newer solution at a later date**
 
     python3 cut_net/cut_net.py
 
@@ -63,6 +64,8 @@ A collection of Python-based hacking tools for various security testing and pene
     **WARNING: Automated iptables modification not functioning. Will need to modify iptables based on use-case.**
         **(e.g. iptables -I FORWARD -j NFQUEUE --queue-num 0)**
         **When complete ensure you flush with "iptables --flush"**
+        **Above may also have issues on newer systems as iptables is depreciated. Will adjust for newer solution at a later date**
+
 
     python3 dns_spoofer/dns_spoofer.py
 
@@ -71,6 +74,8 @@ A collection of Python-based hacking tools for various security testing and pene
     **WARNING: Automated iptables modification not functioning. Will need to modify iptables based on use-case.**
         **(e.g. iptables -I FORWARD -j NFQUEUE --queue-num 0)**
         **When complete ensure you flush with "iptables --flush"**
+        **Above may also have issues on newer systems as iptables is depreciated. Will adjust for newer solution at a later date**
+
 
     **WARNING: Need to enable IP forwarding with "echo 1 > /proc/sys/net/ipv4/ip_forward" or file flows through middle machine will not be enabled.**
 
@@ -81,6 +86,8 @@ A collection of Python-based hacking tools for various security testing and pene
     **WARNING: Automated iptables modification not functioning. Will need to modify iptables based on use-case.**
         **(e.g. iptables -I FORWARD -j NFQUEUE --queue-num 0)**
         **When complete ensure you flush with "iptables --flush"**
+        **Above may also have issues on newer systems as iptables is depreciated. Will adjust for newer solution at a later date**
+
 
     python3 code_injector/code_injector.py
 
