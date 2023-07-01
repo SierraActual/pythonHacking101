@@ -91,6 +91,10 @@ A collection of Python-based hacking tools for various security testing and pene
 
     python3 code_injector/code_injector.py
 
+- **Tool 9: ARP Spoof Detector** - Runs scans on ARP pings to see if anyone is attempting to ARP spoof your computer.
+
+    python3 arpspoof_detector/arpspoof_detector.py
+
 ## Contributing
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
 
