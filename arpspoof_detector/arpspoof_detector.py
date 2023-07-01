@@ -21,7 +21,26 @@ def sniff(interface):
 
 def process_sniffed_packet(packet):
     if packet.haslayer(scapy.ARP) and packet[scapy.ARP].op == 2:
-        print(packet.show())
+        try:
+            real_mac = get_mac(packet[scapy.ARP].psrc)
+            response_mac = packet[scapy.ARP].hwsrc
+            if real_mac != response_mac:
+                print('[+] This network is being ARP spoofed.')
+        except IndexError:
+            pass
+
+
+def get_mac(ip):
+    #creates an arp request packet at target ip
+    arp_request = scapy.ARP(pdst=ip)
+    #creates a broadcast packet to the generic broadcast mac addr
+    broadcast = scapy.Ether(dst='ff:ff:ff:ff:ff:ff')
+    #combines the arp and broadcast packets for later use
+    arp_request_broadcast = broadcast/arp_request
+    #sends arp packet via srp and stores answered and unanswered packet responses
+    answered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)[0]
+    
+    return answered_list[0][1].hwsrc
 
 
 def get_arguments():
