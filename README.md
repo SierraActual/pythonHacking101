@@ -95,6 +95,11 @@ A collection of Python-based hacking tools for various security testing and pene
 
     python3 arpspoof_detector/arpspoof_detector.py
 
+- **Tool 10: WiFi Passowr Stealer** - Runs windows commands to steal all WiFi passwords stored on the system. It then emails them to your email. 
+    **WARNING** You need to use gmail, or edit the smtp server info in the send_mail function. You also need to put your email, and generated app password in the two variables at the top.
+
+    python3 malware/wifi_password/wifi_password_stealer.py
+
 ## Contributing
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
 
