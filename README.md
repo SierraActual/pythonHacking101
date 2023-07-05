@@ -106,6 +106,12 @@ A collection of Python-based hacking tools for various security testing and pene
 
     python3 malware/download_execute_report.py
 
+- **Tool 12: Keylogger** - Logs all keys entered on the system and sends periodic reports to email based on user input.
+
+    **WARNING** You need to use gmail, or edit the smtp server info in the send_mail function.
+
+    python3 malware/keylogger/keylogger.py
+
 ## Contributing
 Contributions are welcome! If you'd like to contribute to this project, please follow these steps:
 
