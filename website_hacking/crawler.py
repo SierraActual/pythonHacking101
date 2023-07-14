@@ -10,24 +10,28 @@ class Crawler:
         self.url = url
 
     def start(self):
-        print('[+] Starting directory search with default URL...')
-        self.dir_search(f'http://{self.url}')
-        
-        print('[+] Starting subdomain search...')
-        with open('sample_wordlist.txt', 'r') as wordlist_file:
-            for line in wordlist_file:
-                previous_string = ''
-                word = line.strip()
-                full_url = f'{word}.{self.url}'
+        try:
+            print('[+] Starting directory search with default URL...')
+            self.dir_search(f'http://{self.url}')
+            
+            print('[+] Starting subdomain search...')
+            with open('sample_wordlist.txt', 'r') as wordlist_file:
+                for line in wordlist_file:
+                    previous_string = ''
+                    word = line.strip()
+                    full_url = f'{word}.{self.url}'
 
-                # Dynamic updating:
-                print(f'Current search: {full_url.ljust(len(previous_string))}\r', end='')
-                previous_string = f'Current search: {full_url}\r'
+                    # Dynamic updating:
+                    print(f'Current search: {full_url.ljust(len(previous_string))}\r', end='')
+                    previous_string = f'Current search: {full_url}'
 
-                response = self.request(full_url)
-                if response:
-                    print(f'[+] {full_url} status: {response}\n    [+] Searching for additional directories...')
-                    self.dir_search(full_url)
+                    response = self.request(full_url)
+                    if response:
+                        print(f'[+] {full_url} status: {response}\n    [+] Searching for additional directories...')
+                        self.dir_search(full_url)
+        except KeyboardInterrupt:
+            print('\n[+] Interrupt detected. Exiting...')
+            exit()
 
     def dir_search(self, url, visited_domains=set()):
         try:
@@ -52,7 +56,7 @@ class Crawler:
 
                 # Dynamic updating:
                 print(f'Current search: {full_url.ljust(len(previous_string))}\r', end='')
-                previous_string = f'Current search: {full_url}\r'
+                previous_string = f'Current search: {full_url}'
 
                 response = self.request(full_url)
                 if response:
