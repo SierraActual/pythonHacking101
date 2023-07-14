@@ -10,16 +10,33 @@ class Crawler:
         self.url = url
 
     def start(self):
-        with open('sample_wordlist.list', 'r') as wordlist_file:
+        print('[+] Starting directory search with default URL...')
+        self.dir_search(f'http://{self.url}')
+        
+        print('[+] Starting subdomain search...')
+        with open('sample_wordlist.txt', 'r') as wordlist_file:
             for line in wordlist_file:
-                word = word.strip
+                word = line.strip()
                 full_url = f'{word}.{self.url}'
-                print(f'{full_url} status: {self.request(full_url)}')
+                response = self.request(full_url)
+                if response:
+                    print(f'[+] {full_url} status: {response}\n[+] Searching for additional directories...')
+                    self.dir_search(full_url)
+
+    def dir_search(self, url):
+        with open('sample_dirlist.txt', 'r') as dir_list:
+            for line in dir_list:
+                word = line.strip()
+                full_url = f'{url}/{word}'
+                response = self.request(full_url)
+                if response:
+                    print([+] Directory found: {full_url})
+                    self.dir_search(full_url)
 
     def request(self, url):
         try:
-            return get_response = requests.get(f'http://{url}')
-        except requests.exceptions.ConnectionError:
+            return requests.get(f'http://{url}', timeout=5)
+        except Exception:
             pass
 
 if __name__ == '__main__':
