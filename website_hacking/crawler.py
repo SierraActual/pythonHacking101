@@ -2,9 +2,7 @@
 import requests, re
 from urllib.parse import urljoin
 
-#TODO add function to get rid of appends to list if limitless domains are detected
-#TODO need to get rid of limitless function and replace with a redirect finder
-    # redirect should skip that domain in the list and move to the next domain without appending to target_links
+#TODO needs work on detection
 
 def main():
     crawler = Crawler('google.com')
@@ -45,14 +43,7 @@ class Crawler:
             print('\n[+] Interrupt detected. Exiting...')
             exit()
 
-    def dir_search(self, url, visited_domains=set()):
-        try:
-            if self.request(url):
-                print(f'      [!] Potential limitless domains at: {url}.')
-                return
-        except Exception:
-            pass
-
+    def dir_search(self, url):
         with open('short_sample_dirlist.txt', 'r') as dir_list:
             previous_string = ''
             for line in dir_list:
@@ -64,16 +55,17 @@ class Crawler:
                 previous_string = f'Current search: {full_url}'
 
                 response = self.request(full_url)
+                print(f'history: \n{response.history}')
+
+
+                if response.status_code == 404:
+                    continue
+
                 if response:
                     print(f'    [+] Directory found: {full_url}')
                     self.spider(full_url)
                     self.target_links.add(full_url)
-                    self.dir_search(full_url, visited_domains)
-                    counter += 1
-        try:
-            visited_domains.remove(domain)  # Remove the domain from visited set after the recursion
-        except Exception:
-            pass
+                    self.dir_search(full_url)
 
     def request(self, url):
         try:
@@ -88,10 +80,6 @@ class Crawler:
             link = urljoin(url, link)
             if url in link:
                 self.target_links.add(link)
-
-    def check_infinite(self, url):
-        url = f'{url}/sdauhdfoiasuhfioasuhdfiushdfkjaekjfoiaewuhfbfaiosudbfhoiusadhfoiueahfiealsnbfoiasuefhiuoaseygf'
-        self.request(url)
 
 if __name__ == '__main__':
     main()
