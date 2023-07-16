@@ -2,3 +2,4 @@ scapy>=2.5.0,<3.0
 argparse>=1.4.0,<2.0
 NetfilterQueue>=1.1.0,<2.0
 pynput>=1.7.0,<2.0
+requests

@@ -18,4 +18,3 @@ admon
 zt
 ~sys
 ~tmp
-mail
