@@ -3,3 +3,4 @@ argparse>=1.4.0,<2.0
 NetfilterQueue>=1.1.0,<2.0
 pynput>=1.7.0,<2.0
 requests
+beautifulsoup4>=4.9.3,<5.0
